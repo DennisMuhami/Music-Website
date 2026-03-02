@@ -124,6 +124,22 @@ body {
     box-shadow: 0 8px 20px rgba(255, 0, 110, 0.4);
 }
 
+.btn-logout {
+    background: linear-gradient(135deg, #ff006e, #8338ec);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(131, 56, 236, 0.3);
+}
+
+.btn-logout:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(131, 56, 236, 0.4);
+}
+
 .mobile-menu-toggle {
     display: none;
     background: none;

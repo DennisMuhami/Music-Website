@@ -312,7 +312,7 @@
 <body>
     <div class="register-container">
         <div class="back-home">
-            <a href="home.html">
+            <a href="home.php">
                 <i class="fas fa-arrow-left"></i>
                 Back to Home
             </a>
@@ -327,7 +327,7 @@
         <div class="success-message" id="successMessage"></div>
 
         <!-- This form will be handled by register.php later -->
-        <form id="registerForm" action="register.php" method="POST">
+        <form id="registerForm" action="auth/register.php" method="POST">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input 
@@ -398,102 +398,42 @@
     </div>
 
     <script>
-        // Password strength indicator
-        const passwordInput = document.getElementById('password');
-        const strengthBar = document.getElementById('passwordStrengthBar');
-        const strengthContainer = document.getElementById('passwordStrength');
+// Password strength indicator
+const passwordInput = document.getElementById('password');
+const strengthBar = document.getElementById('passwordStrengthBar');
+const strengthContainer = document.getElementById('passwordStrength');
 
-        passwordInput.addEventListener('input', function() {
-            const password = this.value;
-            let strength = 0;
+passwordInput.addEventListener('input', function() {
+    const password = this.value;
+    let strength = 0;
 
-            if (password.length > 0) {
-                strengthContainer.style.display = 'block';
-            } else {
-                strengthContainer.style.display = 'none';
-                return;
-            }
+    if (password.length > 0) {
+        strengthContainer.style.display = 'block';
+    } else {
+        strengthContainer.style.display = 'none';
+        return;
+    }
 
-            // Calculate strength
-            if (password.length >= 6) strength += 25;
-            if (password.length >= 10) strength += 25;
-            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 25;
-            if (/[0-9]/.test(password)) strength += 15;
-            if (/[^a-zA-Z0-9]/.test(password)) strength += 10;
+    // Calculate strength
+    if (password.length >= 6) strength += 25;
+    if (password.length >= 10) strength += 25;
+    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 25;
+    if (/[0-9]/.test(password)) strength += 15;
+    if (/[^a-zA-Z0-9]/.test(password)) strength += 10;
 
-            strengthBar.style.width = Math.min(strength, 100) + '%';
-        });
+    strengthBar.style.width = Math.min(strength, 100) + '%';
+});
 
-        // Client-side validation
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Clear previous messages
-            document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('successMessage').style.display = 'none';
-            
-            const username = document.getElementById('username').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            
-            // Validation checks
-            if (!username || !email || !password || !confirmPassword) {
-                showError('Please fill in all fields');
-                return;
-            }
-            
-            if (username.length < 3) {
-                showError('Username must be at least 3 characters');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showError('Password must be at least 6 characters');
-                return;
-            }
-            
-            if (password !== confirmPassword) {
-                showError('Passwords do not match');
-                return;
-            }
-            
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showError('Please enter a valid email address');
-                return;
-            }
-            
-            // Demo mode - show success message
-            // When Person A adds PHP, remove this and let the form submit normally
-            showSuccess('Account created successfully! Redirecting to login...');
-            
-            alert('Demo mode: Registration form ready for PHP backend!\n\nPerson A will add:\n- Database connection\n- Password hashing with password_hash()\n- Email validation with filter_var()\n- Duplicate email/username checking');
-            
-            // For demo, redirect to login after 2 seconds
-            // setTimeout(() => {
-            //     window.location.href = 'login.html';
-            // }, 2000);
-        });
-        
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            
-            // Scroll to top to show error
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        
-        function showSuccess(message) {
-            const successDiv = document.getElementById('successMessage');
-            successDiv.textContent = message;
-            successDiv.style.display = 'block';
-            
-            // Scroll to top to show success
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    </script>
+// Simple form validation (optional)
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    
+    if (password !== confirmPassword) {
+        e.preventDefault();
+        alert('Passwords do not match!');
+    }
+});
+</script>
 </body>
 </html>
