@@ -1,7 +1,18 @@
 <?php
 session_start();
 
-// Check if user is logged in
+// Include music functions
+require_once 'auth/music_functions.php';
+
+// Check if there's a search query
+$search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
+$show_results = !empty($search_query); // Only show results if there's a search term
+
+// Only search if there's a query
+if ($show_results) {
+    $music_files = searchMusic($search_query);
+}
+
 $logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : '';
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
@@ -90,6 +101,168 @@ $email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
       </p>
       <?php endif; ?>
     </div>
+
+    <!-- Search Section -->
+    <div
+      class="search-container"
+      style="max-width: 600px; margin: 40px auto; padding: 0 20px"
+    >
+      <form action="home.php" method="GET" style="display: flex; gap: 10px">
+        <input
+          type="text"
+          name="search"
+          placeholder="Search for songs..."
+          value="<?php echo htmlspecialchars($search_query); ?>"
+          style="
+            flex: 1;
+            padding: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 16px;
+          "
+        />
+        <button
+          type="submit"
+          style="
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #ff006e, #8338ec);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+          "
+        >
+          <i class="fas fa-search"></i> Search
+        </button>
+      </form>
+    </div>
+
+    <!-- Music Results - Only shown when there's a search -->
+    <?php if ($show_results): ?>
+    <div
+      class="music-container"
+      style="max-width: 800px; margin: 0 auto; padding: 20px"
+    >
+      <h2 style="color: white; margin-bottom: 20px">
+        Search Results for "<?php echo htmlspecialchars($search_query); ?>"
+        (<?php echo count($music_files); ?> found)
+      </h2>
+
+      <?php if (empty($music_files)): ?>
+      <div
+        style="
+          text-align: center;
+          padding: 50px;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 20px;
+          color: rgba(255, 255, 255, 0.6);
+        "
+      >
+        <i
+          class="fas fa-music"
+          style="font-size: 48px; margin-bottom: 20px"
+        ></i>
+        <p>No songs found. Try a different search term.</p>
+      </div>
+      <?php else: ?>
+      <div class="music-list">
+        <?php foreach ($music_files as $index => $song): ?>
+        <div
+          class="music-item"
+          style="
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+          "
+          onmouseover="this.style.background = 'rgba(255,255,255,0.1)'"
+          onmouseout="this.style.background = 'rgba(255,255,255,0.05)'"
+        >
+          <div style="display: flex; align-items: center; gap: 15px">
+            <div
+              style="
+                width: 40px;
+                height: 40px;
+                background: linear-gradient(135deg, #ff006e, #8338ec);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+              "
+            >
+              <i class="fas fa-music"></i>
+            </div>
+            <div>
+              <h3 style="color: white; margin: 0; font-size: 16px">
+                <?php echo htmlspecialchars($song['title']); ?>
+              </h3>
+              <p
+                style="
+                  color: rgba(255, 255, 255, 0.5);
+                  margin: 5px 0 0 0;
+                  font-size: 12px;
+                "
+              >
+                <?php echo $song['size']; ?>
+              </p>
+            </div>
+          </div>
+
+          <a
+            href="player.php?file=<?php echo urlencode($song['path']); ?>"
+            style="
+              background: transparent;
+              border: 2px solid #ff006e;
+              color: white;
+              padding: 8px 20px;
+              border-radius: 50px;
+              text-decoration: none;
+              font-weight: 600;
+              transition: all 0.3s ease;
+            "
+            onmouseover="this.style.background = '#ff006e'"
+            onmouseout="this.style.background = 'transparent'"
+          >
+            <i class="fas fa-play"></i> Play
+          </a>
+        </div>
+        <?php endforeach; ?>
+      </div>
+      <?php endif; ?>
+    </div>
+    <?php endif; ?>
+
+    <!-- Optional: Add a welcome message or featured content when no search -->
+    <?php if (!$show_results): ?>
+    <div
+      style="
+        text-align: center;
+        padding: 60px 20px;
+        color: rgba(255, 255, 255, 0.7);
+      "
+    >
+      <i
+        class="fas fa-music"
+        style="font-size: 80px; color: #ff006e; margin-bottom: 20px"
+      ></i>
+      <h2 style="color: white; font-size: 32px; margin-bottom: 15px">
+        Discover Music
+      </h2>
+      <p style="font-size: 18px; max-width: 600px; margin: 0 auto">
+        Use the search bar above to find songs in our collection. Just type a
+        song name and hit search!
+      </p>
+    </div>
+    <?php endif; ?>
 
     <!-- Hero Section -->
     <section class="hero">

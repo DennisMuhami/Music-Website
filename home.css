@@ -47,6 +47,47 @@ body {
     align-items: center;
 }
 
+/* Music list styles */
+.music-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.music-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.music-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.play-btn {
+    background: transparent;
+    border: 2px solid #ff006e;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.play-btn:hover {
+    background: #ff006e;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 0, 110, 0.3);
+}
+
 .logo {
     display: flex;
     align-items: center;
