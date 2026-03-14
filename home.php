@@ -42,6 +42,7 @@ $email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
 
         <ul class="nav-menu">
           <li><a href="#" class="active">Home</a></li>
+          <li><a href="music.php">Music</a></li>
           <li><a href="#">New Arrival</a></li>
           <li><a href="#">Download</a></li>
           <li><a href="#">Pricing</a></li>
